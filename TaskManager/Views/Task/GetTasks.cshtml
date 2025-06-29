@@ -1,0 +1,110 @@
+﻿@model IEnumerable<TaskItem>
+
+@{
+    ViewData["Title"] = ViewData["Title"];
+
+    var currentPage = Context.Request.Query["p"];
+    var sQuery = Context.Request.Query["searchQuery"];
+}
+
+<div class="container-fluid">
+    <h1 class="me-2">@ViewData["Title"]</h1>
+    <hr />
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <button class="btn btn-primary bg-gradient-primary text-white" id="addTask">Add Task</button>
+        </div>
+        <ul class="nav nav-tabs border-1 bg-gradient-success rounded-2">
+            <li class="dropdown">
+                <a class="btn fw-bold text-white">
+                    Sort By:
+                </a>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle btn text-white" data-bs-toggle="dropdown">
+                    Priority
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-priority="Low">Low</a></li>
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-priority="Medium">Medium</a></li>
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-priority="High">High</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle btn text-white" data-bs-toggle="dropdown">
+                    Status
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-status="Pending">Pending</a></li>
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-status="In_Progress">In_Progress</a></li>
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-status="Completed">Completed</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle btn text-white" data-bs-toggle="dropdown">
+                    Date
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu p-2">
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-date="Newest">Newest</a></li>
+                    <li><a class="dropdown-item" asp-action="GetTasks" asp-controller="Task" asp-route-p="@currentPage" asp-route-date="Oldest">Oldest</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div>
+            <form asp-action="GetTasks" asp-controller="Task" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="hidden" name="p" value="@currentPage" />
+                    <input type="text" name="searchQuery" class="form-control bg-light small" value="@(string.IsNullOrEmpty(sQuery) ? "" : sQuery)" placeholder="Search for..."
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary bg-gradient-primary text-white" type="submit">
+                            Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Search Dropdown (Only XS) -->
+            <a class="nav-link dropdown-toggle d-sm-none" href="#" id="searchDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3 shadow animated--grow-in"
+                    aria-labelledby="searchDropdown">
+                <form asp-action="FilterTasks" asp-controller="Task" method="post" class="form-inline w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="hidden" name="p" value="@currentPage" />
+                        <input type="text" name="searchQuery" class="form-control bg-light border-0 small"
+                                placeholder="Search for..." aria-label="Search"
+                                aria-describedby="basic-addon2">
+                        <button class="btn btn-primary bg-gradient-primary text-white" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr />
+</div>
+
+
+@* Add Task Modal *@
+<div class="modal fade" id="mainModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            @* Render PartialViews  *@
+
+        </div>
+    </div>
+</div>
+
+@* All Tasks *@
+<partial name="_TaskListPartialView" model="Model" />

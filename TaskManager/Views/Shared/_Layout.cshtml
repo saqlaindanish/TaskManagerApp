@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TaskManager</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TaskManager.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Task Manager App</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+
+                        @* <li class="nav-item">
+                            <a class="nav-link" href="#" aria-current="page">
+                                Page 1
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Page 2</a>
+                        </li> *@
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link openSignUpModal"><i class="bi bi-person-plus"></i> Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link openLoginModal"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @* Single reusable modal window for signUp and login model *@
+    <div class="modal fade" id="mainModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                
+                @* Render PartialViews  *@
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - TaskManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* AJAX call for opening/closing modal window *@
+    <script>
+        // When clicking link to switch to Login modal
+        $(document).on('click', '.openLoginModal', function (e) {
+            e.preventDefault();
+            switchModal('/Account/Login');
+        });
+
+        // When clicking link to switch to Signup modal
+        $(document).on('click', '.openSignUpModal', function (e) {
+            e.preventDefault();
+            switchModal('/Account/Register');
+        });
+         
+        // Common function to switch modal content
+        function switchModal(partialUrl) {
+            if ($('#mainModal').hasClass('show')) {
+                $('#mainModal').modal('hide');
+
+                $('#mainModal').one('hidden.bs.modal', function () {
+                    loadAndShow(partialUrl);
+                });
+            } else {
+                loadAndShow(partialUrl);
+            }
+        }
+
+        function loadAndShow(partialUrl) {
+            $('#mainModal .modal-content').load(partialUrl, function () {
+                $('#mainModal').modal('show');
+            });
+        }
+
+    </script>
+
+    <script src="~/js/FormSubmission.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

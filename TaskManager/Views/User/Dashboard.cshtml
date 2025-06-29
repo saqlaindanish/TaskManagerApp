@@ -1,0 +1,195 @@
+﻿@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    int i = 1;
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <button class="btn btn-primary bg-gradient-primary text-white" id="addTask">Add Task</button>
+    </div>
+    <hr />
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center px-4">
+                        <div class="col mr-2">
+                            <a href="/Task/GetTasks" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Tasks
+                            </a>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 total-tasks"> </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tasks fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center px-4">
+                        <div class="col mr-2">
+                            <a href="/Task/GetTasks?p=Completed" class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Completed
+                            </a>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 completed-tasks"> </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center px-4">
+                        <div class="col mr-2">
+                            <a href="/Task/GetTasks?p=In_Progress" class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                In_Progress
+                            </a>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 in_progress-tasks"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-signal fa-2x text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center px-4">
+                        <div class="col mr-2">
+                            <a href="/Task/GetTasks?p=Pending" class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending
+                            </a>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 pending_tasks"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-solid fa-spinner fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Row -->
+    <hr />
+   
+    <div>
+         @if (Model.TasksDueToday.Any())
+        {
+            <div class="d-flex px-2 py-1 align-items-center justify-content-between bg-gradient-danger">
+                <h3 class="text-gray-800 m-0 text-white">Tasks Due Today</h3>
+                @* <i class="fas fa-sort-down pe-2 text-white toggle-icon" style="cursor:pointer"></i> *@
+            </div>
+
+            <div>
+                <partial name="_TaskListPartialView" model="Model.TasksDueToday" />
+                <hr />
+            </div>
+        }
+    
+
+        @if (Model.NewTasks.Any())
+        {
+            <div class="d-flex px-2 py-1 align-items-center justify-content-between bg-gradient-info">
+                <h3 class="text-gray-800 m-0 text-white">New Tasks</h3>
+                @* <i class="fas fa-sort-down pe-2 text-white toggle-icon" style="cursor:pointer"></i> *@
+            </div>
+
+            <div>
+                <partial name="_TaskListPartialView" model="Model.NewTasks" />
+                <hr />
+            </div>
+
+        }
+
+        @if (Model.PendingTasks.Any())
+        {
+            <div class="d-flex px-2 py-1 align-items-center justify-content-between bg-gradient-warning">
+                <h3 class="text-gray-800 m-0 text-white">Pending Tasks</h3>
+                @* <i class="fas fa-sort-down pe-2 text-white toggle-icon" style="cursor:pointer"></i> *@
+            </div>
+
+            <div>
+                <partial name="_TaskListPartialView" model="Model.PendingTasks" />
+                <hr />
+            </div>
+        }
+
+        @if (Model.In_ProgressTasks.Any())
+        {
+            <div class="d-flex px-2 py-1 align-items-center justify-content-between bg-gradient-primary">
+                <h3 class="text-gray-800 m-0 text-white">In_Progress Tasks</h3>
+                @* <i class="fas fa-sort-down pe-2 text-white toggle-icon" style="cursor:pointer"></i> *@
+            </div>
+
+            <div>
+                <partial name="_TaskListPartialView" model="Model.In_ProgressTasks" />
+                <hr />
+            </div>
+        }
+
+
+        @if (Model.CompetedTasks.Any())
+        {
+            <div class="d-flex px-2 py-1 align-items-center justify-content-between bg-gradient-success">
+                <h3 class="text-gray-800 m-0 text-white">Completed Tasks</h3>
+                @* <i class="fas fa-sort-down pe-2 text-white toggle-icon" style="cursor:pointer"></i> *@
+            </div>
+
+            <div>
+                <partial name="_TaskListPartialView" model="Model.CompetedTasks" />
+                <hr />
+            </div>
+        }
+    </div>
+</div>
+
+@* Modal window for add/edit/delete tasks *@
+ <div class="modal fade" id="mainModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            @* Render PartialViews  *@
+
+        </div>
+    </div>
+ </div>
+
+@section Scripts{
+    <script>
+    
+        function loadTasksCount() {
+                $.get("/User/GetTasksData", function (data) {
+
+                    $('.total-tasks').text(data.all);
+                    $('.pending_tasks').text(data.pending);
+                    $('.completed-tasks').text(data.completed);
+                    $('.in_progress-tasks').text(data.inProgress);
+                })
+         }
+
+         loadTasksCount();
+
+    </script>
+}

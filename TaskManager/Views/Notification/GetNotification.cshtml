@@ -1,0 +1,84 @@
+﻿@model Notification;
+
+@{
+    ViewData["Title"] = "Notification";
+    
+        string color = "";
+    if (Model.Task != null)
+    {
+            switch (Model.Task.Status)
+
+            {
+                case "Pending":
+                    color = "bg-gradient-warning";
+                    break;
+
+                case "In_Progress":
+                    color = "bg-gradient-primary";
+                    break;
+
+                case "Completed":
+                    color = "bg-gradient-success";
+                    break;
+
+            }
+    }
+}
+
+<div class="container-fluid">
+    <div class="w-50">
+        <h3 class="mb-3">Notification Detail</h3>
+        <hr />
+        <div class="d-flex justify-content-between">
+            <p class="mb-2">Notification Date:</p>
+            <p class="mb-2">"@Model.CreatedAt.ToString("MMM dd yyyy (dddd) hh:mm tt")"</p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <p class="mb-2">Message:</p>
+            <p class="mb-2">"@Model.Message"</p>
+        </div>
+        <hr />
+
+        <h3>Task Detail</h3>
+        <hr />
+        @if (Model.Task != null)
+        {
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Title:</p>
+                <p class="mb-2">"@Model.Task.Title"</p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Deadline:</p>
+                <p class="mb-2">"@Model.Task.DueDate.ToString()"</p>
+            </div>
+            if(Model.Task.Status != "Completed")
+            {
+                <div class="d-flex justify-content-between">
+                    <p class="mb-2">Time Left:</p>
+                    <p class="mb-2 timeLeft" data-duedate="@Model.Task.DueDate.ToString()"></p>
+                </div>
+            }
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Priority:</p>
+                <p class="mb-2">"@Model.Task.Priority"</p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Status:</p>
+                <p class="mb-2 text-white p-1 rounded-2 @color">"@Model.Task.Status"</p>
+            </div>
+        }
+        else
+        {
+            <p>The task has been deleted.</p>
+        }
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+     
+    </script>
+
+}

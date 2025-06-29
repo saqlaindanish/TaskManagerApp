@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewData["Title"] - TaskManager</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+    <!--  Bootstrap core style css -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            @inject UserManager<ApplicationUser> UserManager;
+            @{
+                var user = UserManager.GetUserAsync(User).Result;
+            }
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/User/Dashboard">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">@user.FullName</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item @((ViewData["ActiveLink"] == "Dashboard" ? "active" : ""))">
+                <a class="nav-link" asp-action="Dashboard" asp-controller="User">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item @((ViewData["ActiveParent"] == "MyTasks" ? "active" : ""))">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" href="#collapseTasks"
+                   role="button" aria-expanded="false" aria-controls="collapseTasks">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>My Tasks</span>
+                </a>
+                <div id="collapseTasks" class="collapse @((ViewData["ActiveParent"] == "MyTasks" ? "show" : ""))" data-bs-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tasks:</h6>
+                        <a class="collapse-item @((ViewData["ActiveLink"] == "AllTasks" ? "active" : ""))" asp-action="GetTasks" asp-controller="Task">All Tasks</a>
+                        <a class="collapse-item @((ViewData["ActiveLink"] == "Pending" ? "active" : ""))" asp-action="GetTasks" asp-controller="Task" asp-route-p="Pending">Pending</a>
+                        <a class="collapse-item @((ViewData["ActiveLink"] == "In_Progress" ? "active" : ""))" asp-action="GetTasks" asp-controller="Task" asp-route-p="In_Progress">In-Progress</a>
+                        <a class="collapse-item @((ViewData["ActiveLink"] == "Completed" ? "active" : ""))" asp-action="GetTasks" asp-controller="Task" asp-route-p="Completed">Completed</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Notification Menu -->
+
+            <li class="nav-item  @((ViewData["ActiveParent"] == "Notifications" ? "active" : ""))">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" href="#collapseNotifications"
+                   role="button" aria-expanded="false" aria-controls="collapseNotifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <div id="collapseNotifications" class="collapse @((ViewData["ActiveParent"] == "Notifications" ? "show" : ""))" data-bs-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item @((ViewData["ActiveLink"] == "AllNotifications" ? "active" : ""))" asp-action="AllNotifications" asp-controller="Notification">All Notifications</a>
+                    </div>
+                </div>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Addons
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/Account/Logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle me-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav">
+                      <h1 class="text-primary fw-bold ms-3">Task Manager App</h1>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <!-- Notifications -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="/Notification/UpdateIsSeenStatus" id="alertsDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <span class="badge bg-danger badge-counter" id="badge"></span>
+                            </a>
+
+                            <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in"
+                                 aria-labelledby="alertsDropdown" id="notification">
+                      
+                                @* notifications will be appear here after fetch through AJAX request *@
+
+
+                            </div>
+                        </li>
+
+
+                        <li class="topbar-divider d-none d-sm-block"></li>
+
+                        <!-- User Info -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="me-2 d-none d-lg-inline text-gray-600 small">@user.UserName</span>
+                                <img class="img-profile rounded-circle" src="~/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i> Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i> Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/Account/Logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i> Logout</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- End of Top-bar -->
+                <!-- Page Content -->
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Task Manager 2025</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+
+    <!-- End of Page Wrapper -->
+    
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+   
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
+    
+    <!-- Custom JavaScript files-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+    <script src="/js/dynamic.js"></script>
+    <script src="~/js/FormSubmission.js"></script>
+    <script src="~/lib/jquery/jquery.easing.min.js"></script> 
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

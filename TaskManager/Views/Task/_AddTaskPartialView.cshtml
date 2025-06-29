@@ -1,0 +1,47 @@
+﻿@model AddTaskViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add Task</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form class="modal-form" asp-action="AddTask" asp-controller="Task" method="post">
+    <div class="modal-body">
+        <!-- Login form -->
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" type="tel" class="form-control">
+            <span class="text-danger" asp-validation-for="Title"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <input asp-for="Description" type="text" class="form-control">
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Priority" class="form-check-label">Priority</label>
+            <select asp-for="Priority" asp-items="Html.GetEnumSelectList<TaskPriority>()" class="form-select">
+                <option value="">-- Select Priority --</option>
+            </select>
+            <span asp-validation-for="Priority" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DueDate" class="form-label"></label>
+            <input type="datetime-local"  asp-for="DueDate"/>
+            <span asp-validation-for="DueDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="w-100 btn bg-gradient-primary text-white">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

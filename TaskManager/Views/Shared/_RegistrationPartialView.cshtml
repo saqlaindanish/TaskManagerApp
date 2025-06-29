@@ -1,0 +1,47 @@
+﻿@using TaskManager.Models.ViewModels
+@model RegisterViewModel;
+
+<div class="modal-header">
+    <h1 class="h4 text-gray-900">Create an Account!</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form class="modal-form" method="post" asp-action="Register" asp-controller="Account"> 
+    <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Full Name</label>
+            <input type="text" asp-for="FullName" class="form-control">
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email address</label>
+            <input type="email" asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group row mb-3">
+            <div class="col-6">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input type="password" asp-for="Password" class="form-control">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col-6">
+                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" asp-for="ConfirmPassword" class="form-control">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="modal-footer p-0">
+            <input type="submit" value="Register" class="btn btn-primary w-100"/>
+        </div>
+    </div>
+</form>
+<div class="text-center pb-3">
+    <a class="openLoginModal">Already have an account? Login</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

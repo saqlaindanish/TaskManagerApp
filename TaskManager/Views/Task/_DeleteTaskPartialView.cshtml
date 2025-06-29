@@ -1,0 +1,29 @@
+﻿@model TaskItem;
+
+<div class="modal-header">
+    <h5 class="modal-title text-danger">Delete Task</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form class="modal-form" asp-action="DeleteTask" asp-controller="Task" method="post">
+    <div class="modal-body">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+        <!-- Login form -->
+
+        <div class="mb-3">
+            <p>Are you sure to delete task <span class="fw-bold">"@Model.Title" </span> ?</p>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn bg-gray-900 text-white" data-bs-dismiss="modal" aria-label="Close">No</button>
+        <button type="submit" class="btn bg-gradient-danger text-white">Yes</button>
+    </div>
+</form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

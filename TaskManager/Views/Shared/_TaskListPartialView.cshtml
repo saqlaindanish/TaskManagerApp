@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TaskItem>
+
+@if (Model.Any())
+{
+    <div class="col-xl-12 p-0">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr class="align-middle">
+                                <th>#</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Added On</th>
+                                <th class="text-center">Deadline</th>
+                                <th class="text-center">Priority</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (var task in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">@count</td>
+                                    <td class="text-center">@task.Title</td>
+                                    <td class="text-justify" style="width:200px;">@task.Description</td>
+                                    <td class="text-center">@task.CreatedOn</td>
+                                    <td class="text-center">@task.DueDate</td>
+                                    <td class="text-center">@task.Priority</td>
+                                    <td class="text-center">
+                                        @if (task.Status == "Pending")
+                                        {
+                                            <span class="badge bg-gradient-warning text-light">@task.Status</span>
+                                        }
+                                        else if (task.Status == TaskManager.Models.ViewModels.Status.In_Progress.ToString())
+                                        {
+                                            <span class="badge bg-gradient-primary text-light">@task.Status</span>
+                                        }
+                                        else if (task.Status == "Completed")
+                                        {
+                                            <span class="badge bg-gradient-success text-light">@task.Status</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <button data-id="@task.Id" class="btn bg-gradient-primary text-white btn-sm edit-task">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button data-id="@task.Id" class="btn bg-gradient-danger text-white btn-sm delete-task">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End table-responsive -->
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container-fluid mt-2">
+        <p>Empty</p>
+    </div>
+}
+
