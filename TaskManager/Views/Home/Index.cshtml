@@ -2,7 +2,95 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-4">
+                        <i class="bi bi-check2-square display-2 text-primary"></i>
+                    </div>
+
+                    <h1 class="display-5 fw-bold mb-3">
+                        Welcome to Task Manager
+                    </h1>
+
+                    <p class="lead text-muted mb-4">
+                        Organize your work, manage your daily tasks, and stay productive with a simple and intuitive task management application.
+                    </p>
+
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-md-8">
+                            <ul class="list-group list-group-flush text-start">
+                                <li class="list-group-item border-0">
+                                    ✅ Create and organize your tasks
+                                </li>
+                                <li class="list-group-item border-0">
+                                    ✅ Set priorities and due dates
+                                </li>
+                                <li class="list-group-item border-0">
+                                    ✅ Track your progress
+                                </li>
+                                <li class="list-group-item border-0">
+                                    ✅ Stay focused and productive
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Create your free account to start managing your tasks in just a few clicks.
+                    </p>
+
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a class="btn btn-primary btn-lg px-4 openSignUpModal">
+                            Create Account
+                        </a>
+
+                        <a class="btn btn-outline-primary btn-lg px-4 openLoginModal">
+                            Sign In
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+<script>
+    // When clicking link to switch to Login modal
+    $(document).on('click', '.openLoginModal', function (e) {
+        e.preventDefault();
+        switchModal('/Account/Login');
+    });
+
+    // When clicking link to switch to Signup modal
+    $(document).on('click', '.openSignUpModal', function (e) {
+        e.preventDefault();
+        switchModal('/Account/Register');
+    });
+
+    // Common function to switch modal content
+    function switchModal(partialUrl) {
+        if ($('#mainModal').hasClass('show')) {
+            $('#mainModal').modal('hide');
+
+            $('#mainModal').one('hidden.bs.modal', function () {
+                loadAndShow(partialUrl);
+            });
+        } else {
+            loadAndShow(partialUrl);
+        }
+    }
+
+    function loadAndShow(partialUrl) {
+        $('#mainModal .modal-content').load(partialUrl, function () {
+            $('#mainModal').modal('show');
+        });
+    }
+
+</script>
